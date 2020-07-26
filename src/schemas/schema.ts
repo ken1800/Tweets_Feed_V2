@@ -4,6 +4,9 @@ export const typeDefs = gql`
   type Query {
     tweets: [Tweet!]
     feeds: [Feed!]
+    feed(id: Int): [Feed!]
+    users: [User!]
+    user(id: Int): [User]
   }
 
   type User {
