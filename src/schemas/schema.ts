@@ -1,12 +1,9 @@
 import { gql } from "apollo-server-express";
 export const typeDefs = gql`
   scalar Date
+
   type Query {
-    tweets: [Tweet!]
     feeds: [Feed!]
-    feed(id: Int): [Feed!]
-    users: [User!]
-    user(id: Int): [User]
   }
 
   type User {
@@ -32,5 +29,17 @@ export const typeDefs = gql`
     activity_type: String
     seen_at: Date
     tweet: [Tweet]
+  }
+  extend type Query {
+    tweets: [Tweet!]
+  }
+  extend type Query {
+    user(id: Int): [User]
+  }
+  extend type Query {
+    users: [User!]
+  }
+  extend type Query {
+    feed(id: Int): [Feed!]
   }
 `;

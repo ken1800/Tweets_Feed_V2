@@ -1,17 +1,22 @@
 require("dotenv").config();
 import express = require("express");
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, makeExecutableSchema } from "apollo-server-express";
 const TweetsDatabase = require("./config/Databases");
 import { typeDefs } from "./schemas/schema";
+import jwt from "jsonwebtoken";
 import db from "./config/db";
 import resolvers from "./resolvers/resolvers";
 
 const app: express.Application = express();
 const databseSource = new TweetsDatabase(db);
 
-const server = new ApolloServer({
+const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
+});
+
+const server = new ApolloServer({
+  schema,
   dataSources: () => ({ databseSource }),
 });
 
