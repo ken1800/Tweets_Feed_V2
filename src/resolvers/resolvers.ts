@@ -8,7 +8,7 @@ const resolvers = {
     },
     feed: async (_source: any, _args: any, { dataSources }: any) => {
       const fD = await dataSources.databseSource.getFeed(_args.id);
-      console.log(fD);
+      //console.log(fD);
       return fD;
     },
     users: async (_source: any, _args: any, { dataSources }: any) => {
