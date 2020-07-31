@@ -30,6 +30,19 @@ class TweetsDatabase extends SQLDataSource {
       .cache(MINUTE);
     return rows;
   }
+  getUserByEmail(email: string) {
+    const rows = this.db
+      .select("*")
+      .from("users")
+      .where("email", email)
+      .cache(MINUTE);
+    return rows;
+  }
+  addUser(data: any) {
+    const { name, email } = data;
+    const rows = this.db.insert({ name, email }).into("users").returning("*");
+    return rows;
+  }
 }
 module.exports = TweetsDatabase;
 

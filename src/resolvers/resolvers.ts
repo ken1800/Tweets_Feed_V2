@@ -1,3 +1,6 @@
+import { PubSub } from "apollo-server-express";
+export const pubsub = new PubSub();
+const USER_ADDED = "USER_ADDED";
 const resolvers = {
   Query: {
     feeds: async (_source: any, _args: any, { dataSources }: any) => {
@@ -34,6 +37,44 @@ const resolvers = {
       return tweets.filter(
         (tweet: any) => tweet.tweets_id === parent.activity_id
       );
+    },
+  },
+  Mutation: {
+    addUser: async (parent: any, _args: any, { dataSources }: any) => {
+      const data = {
+        email: _args.email,
+        name: _args.email,
+      };
+
+      const user = await dataSources.databseSource.addUser(data);
+      await pubsub.publish(USER_ADDED, user);
+      return user;
+    },
+    login: async (_: any, { email }: any, { dataSources }: any) => {
+      let logResult = {
+        token: "",
+        user: null,
+        message: "Login error",
+        status: 422,
+      };
+      const user = await dataSources.databseSource.getUserByEmail({ email });
+      if (await user) {
+        console.log(user, "this is the uer");
+        return {
+          token: Buffer.from(email).toString("base64"),
+          user: user,
+          message: "Login success",
+          status: 200,
+        };
+      } else {
+        return logResult;
+      }
+    },
+  },
+
+  Subscription: {
+    userAdded: {
+      subscribe: () => pubsub.asyncIterator([USER_ADDED]),
     },
   },
 };

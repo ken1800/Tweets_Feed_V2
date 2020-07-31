@@ -5,7 +5,12 @@ export const typeDefs = gql`
   type Query {
     feeds: [Feed!]
   }
-
+  type Mutation {
+    addUser(name: String, email: String): [User]
+  }
+  type Subscription {
+    userAdded: [User]
+  }
   type User {
     userId: Int
     name: String
@@ -30,6 +35,12 @@ export const typeDefs = gql`
     seen_at: Date
     tweet: [Tweet]
   }
+  type LoginResult {
+    user: User
+    message: String
+    token: String
+    status: Int
+  }
   extend type Query {
     tweets: [Tweet!]
   }
@@ -41,5 +52,8 @@ export const typeDefs = gql`
   }
   extend type Query {
     feed(id: Int): [Feed!]
+  }
+  extend type Mutation {
+    login(email: String): LoginResult
   }
 `;
