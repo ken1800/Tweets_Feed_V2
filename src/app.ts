@@ -27,6 +27,7 @@ const server = new ApolloServer({
   },
   tracing: true,
 });
+
 server.applyMiddleware({ app });
 
 const httpServer = http.createServer(app);
