@@ -2,6 +2,7 @@ require("dotenv").config();
 import express = require("express");
 import {
   ApolloServer,
+  AuthenticationError,
   makeExecutableSchema,
   PubSub,
 } from "apollo-server-express";
@@ -10,9 +11,6 @@ import { typeDefs } from "./schemas/schema";
 const http = require("http");
 import db from "./config/db";
 import resolvers from "./resolvers/resolvers";
-
-export const Pub = new PubSub();
-
 const app: express.Application = express();
 const databseSource = new TweetsDatabase(db);
 const PORT = process.env.PORT || 4000;
@@ -24,10 +22,8 @@ const schema = makeExecutableSchema({
 const server = new ApolloServer({
   schema,
   dataSources: () => ({ databseSource }),
-  context: async ({ req }: any) => {
-    if (!req || !req.headers) {
-      return;
-    }
+  context: async () => {
+    return "hello contextx";
   },
   tracing: true,
 });
