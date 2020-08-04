@@ -11,6 +11,7 @@ export const typeDefs = gql`
   type Subscription {
     userAdded: [User]
   }
+
   type User {
     userId: Int
     name: String

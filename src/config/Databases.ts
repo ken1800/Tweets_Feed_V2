@@ -45,5 +45,3 @@ class TweetsDatabase extends SQLDataSource {
   }
 }
 module.exports = TweetsDatabase;
-
-// db.select("name").from("users").where('userId', id)

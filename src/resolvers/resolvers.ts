@@ -3,7 +3,8 @@ export const pubsub = new PubSub();
 const USER_ADDED = "USER_ADDED";
 const resolvers = {
   Query: {
-    feeds: async (_source: any, _args: any, { dataSources }: any) => {
+    feeds: async (_args: any, context: any, { dataSources }: any) => {
+      console.log(context);
       return dataSources.databseSource.getFeeds();
     },
     tweets: async (_source: any, _args: any, { dataSources }: any) => {
@@ -32,7 +33,12 @@ const resolvers = {
     },
   },
   Feed: {
-    tweet: async (parent: any, _args: any, { dataSources }: any) => {
+    tweet: async (
+      parent: any,
+      _args: any,
+
+      { dataSources }: any
+    ) => {
       const tweets = await dataSources.databseSource.getTweets();
       return tweets.filter(
         (tweet: any) => tweet.tweets_id === parent.activity_id
@@ -59,7 +65,7 @@ const resolvers = {
       };
       const user = await dataSources.databseSource.getUserByEmail({ email });
       if (await user) {
-        console.log(user, "this is the uer");
+        console.log(user, "this is the user");
         return {
           token: Buffer.from(email).toString("base64"),
           user: user,
