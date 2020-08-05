@@ -4,7 +4,6 @@ const USER_ADDED = "USER_ADDED";
 const resolvers = {
   Query: {
     feeds: async (_args: any, context: any, { dataSources }: any) => {
-      console.log(context);
       return dataSources.databseSource.getFeeds();
     },
     tweets: async (_source: any, _args: any, { dataSources }: any) => {
@@ -12,7 +11,6 @@ const resolvers = {
     },
     feed: async (_source: any, _args: any, { dataSources }: any) => {
       const fD = await dataSources.databseSource.getFeed(_args.id);
-      //console.log(fD);
       return fD;
     },
     users: async (_source: any, _args: any, { dataSources }: any) => {
@@ -65,7 +63,6 @@ const resolvers = {
       };
       const user = await dataSources.databseSource.getUserByEmail({ email });
       if (await user) {
-        console.log(user, "this is the user");
         return {
           token: Buffer.from(email).toString("base64"),
           user: user,
